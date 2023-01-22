@@ -1,7 +1,5 @@
 import { Button } from "@chakra-ui/react";
 
-type TestProps = React.ComponentProps<typeof Button>
-
 interface ChakraButtonProps extends React.ComponentProps<typeof Button> {
   variant?: "solid" | "outline";
 }
