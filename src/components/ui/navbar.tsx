@@ -35,16 +35,17 @@ export default function Navbar() {
         justifyContent="space-between"
         backgroundColor="whiteAlpha.900"
         rounded="2xl"
+        w={["90%", "80%"]}
+        mx="auto"
         px={{ base: "5", lg: "20" }}
         py="3"
-        wrap="wrap"
         position="fixed"
         top="10"
         left="0"
         right="0"
-        mx="auto"
-        w={["90%", "80%"]}
         zIndex="3"
+        wrap="wrap"
+        shadow="sm"
       >
         <HStack spacing="8" align="center">
           <Heading size={{ base: "md", lg: "lg" }}>Linkhub</Heading>

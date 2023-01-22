@@ -33,13 +33,8 @@ const featuresData: FeatureItem[] = [
 
 export default function Features() {
   return (
-    <Box
-      backgroundColor="cyan.100"
-      minW="100vw"
-      py="20"
-      overflowX="clip"
-    >
-      <Box w={["90%", "70%"]} mx="auto" id="features" textAlign="center">
+    <Box backgroundColor="cyan.100" minW="100vw" py="20" overflowX="clip">
+      <Box w={{ base: "80%", lg: "70%" }} mx="auto" id="features" textAlign="center">
         <Heading>Our features</Heading>
         <Flex
           direction={{ base: "column", lg: "row" }}
@@ -59,11 +54,7 @@ export default function Features() {
 function FeatureItemCard({ image, title, description }: FeatureItem) {
   return (
     <VStack gap="3">
-      <Image
-        src={image}
-        alt={title}
-        height={150}
-      />
+      <Image src={image} alt={title} height={150} />
       <Heading size="lg">{title}</Heading>
       <Text>{description}</Text>
     </VStack>

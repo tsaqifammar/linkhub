@@ -40,7 +40,7 @@ export default function Questions() {
         <Box
           bgColor="white"
           mt="12"
-          p="12"
+          p={{ base: "8", lg: "12" }}
           border="1px"
           borderColor="gray.300"
           rounded="2xl"
