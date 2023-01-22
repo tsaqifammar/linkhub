@@ -26,9 +26,18 @@ const questionsData: { question: string; answer: string }[] = [
       "Enim iure nobis temporibus natus quod magni commodi adipisci, velit molestias unde aliquid vero minus placeat quisquam nam culpa? Beatae, blanditiis veniam.",
   },
   {
+    question: "Is Linkhub the original link in bio tool?",
+    answer:
+      "The short answer is, no. This is a linktree clone afterall.",
+  },
+  {
+    question: "Is Linkhub free to use?",
+    answer: "Yes!",
+  },
+  {
     question: "Is there an app version of Linkhub",
     answer:
-      "Velit molestias unde aliquid vero minus placeat quisquam nam culpa? Beatae, blanditiis veniam.",
+      "There is only the web version for now. Facilis, animi possimus error quia reiciendis voluptas. Nostrum accusamus reprehenderit dolorem totam blanditiis est, modi iusto vitae optio magnam inventore, enim magni!",
   },
 ];
 
