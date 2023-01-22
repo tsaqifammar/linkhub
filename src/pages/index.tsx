@@ -2,6 +2,7 @@ import Head from "next/head";
 import Features from "@/components/landing-page/features";
 import Navbar from "@/components/ui/navbar";
 import Hero from "@/components/landing-page/hero";
+import Questions from "@/components/landing-page/questions";
 
 export default function LandingPage() {
   return (
@@ -15,6 +16,7 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Features />
+      <Questions />
     </>
   );
 }

@@ -36,7 +36,6 @@ export default function Features() {
     <Box
       backgroundColor="cyan.100"
       minW="100vw"
-      minH="60vh"
       py="20"
       overflowX="clip"
     >
