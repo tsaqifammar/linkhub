@@ -29,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 import Button from "@/components/button";
 import { HiOutlineMenu } from "react-icons/hi";
+import Features from "@/components/landing-page/features";
 
 export default function LandingPage() {
   return (
@@ -39,18 +40,19 @@ export default function LandingPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar />
       <Box
         backgroundColor="gray.800"
         minW="100vw"
         minH="100vh"
-        pt="8"
+        py="8"
         overflowX="clip"
       >
         <Box w={["90%", "80%"]} mx="auto">
-          <Navbar />
           <Hero />
         </Box>
       </Box>
+      <Features />
     </>
   );
 }
@@ -64,13 +66,19 @@ function Navbar() {
   return (
     <>
       <Flex
-        w="full"
         justifyContent="space-between"
         backgroundColor="whiteAlpha.900"
         rounded="2xl"
         px={{ base: "5", lg: "20" }}
         py="3"
         wrap="wrap"
+        position="fixed"
+        top="10"
+        left="0"
+        right="0"
+        mx="auto"
+        w={["90%", "80%"]}
+        zIndex="3"
       >
         <HStack spacing="8" align="center">
           <Heading size={{ base: "md", lg: "lg" }}>Linkhub</Heading>
@@ -142,7 +150,7 @@ function Hero() {
   return (
     <Grid
       gap="5"
-      pt="14"
+      pt="40"
       templateColumns="1fr"
       alignItems="center"
       minH="container.sm"
