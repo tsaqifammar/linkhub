@@ -11,9 +11,11 @@ import {
 } from "@chakra-ui/react";
 import Button from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Hero() {
   const [name, setName] = useState("");
+  const router = useRouter();
 
   return (
     <Box
@@ -62,7 +64,17 @@ export default function Hero() {
                   onChange={(e) => setName(e.target.value)}
                 />
               </InputGroup>
-              <Button>Claim your linkhub</Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push({
+                    pathname: "/sign-up",
+                    query: { username: name },
+                  });
+                }}
+              >
+                Claim your linkhub
+              </Button>
             </Flex>
           </Flex>
           <Image

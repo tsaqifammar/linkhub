@@ -64,12 +64,16 @@ export default function Navbar() {
           </Show>
         </HStack>
         <HStack>
-          <Button variant="outline" size={{ base: "sm", lg: "md" }}>
-            Log In
-          </Button>
-          <Button variant="solid" size={{ base: "sm", lg: "md" }}>
-            Sign Up
-          </Button>
+          <NextLink href="/login">
+            <Button variant="outline" size={{ base: "sm", lg: "md" }}>
+              Log In
+            </Button>
+          </NextLink>
+          <NextLink href="/sign-up">
+            <Button variant="solid" size={{ base: "sm", lg: "md" }}>
+              Sign Up
+            </Button>
+          </NextLink>
           <Hide above="md">
             <IconButton
               aria-label="Nav Links"

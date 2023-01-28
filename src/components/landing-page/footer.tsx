@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import Button from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Footer() {
   return (
@@ -20,9 +21,16 @@ export default function Footer() {
 }
 
 function UpperSection() {
+  const router = useRouter();
   const [name, setName] = useState("");
+
   return (
-    <Box backgroundColor="gray.800" minW="100vw" py={{ base: "16", lg: "24"}} overflowX="clip">
+    <Box
+      backgroundColor="gray.800"
+      minW="100vw"
+      py={{ base: "16", lg: "24" }}
+      overflowX="clip"
+    >
       <Box w={{ base: "70%", lg: "80%" }} mx="auto" id="features">
         <Flex
           direction={{ base: "column", lg: "row" }}
@@ -70,7 +78,18 @@ function UpperSection() {
                 onChange={(e) => setName(e.target.value)}
               />
             </InputGroup>
-            <Button size="lg">Claim your linkhub</Button>
+            <Button
+              size="lg"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push({
+                  pathname: "/sign-up",
+                  query: { username: name },
+                });
+              }}
+            >
+              Claim your linkhub
+            </Button>
           </Flex>
         </Flex>
       </Box>
