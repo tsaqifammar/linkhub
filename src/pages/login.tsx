@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { Box, Divider, Flex, Heading, Text, useToast } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Box, Flex, Heading, Link, Text, useToast } from "@chakra-ui/react";
 import { LoginProps, LoginSchema } from "@/modules/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,7 +55,7 @@ export default function Login() {
         backgroundColor="gray.50"
         minW="100vw"
         minH="100vh"
-        py="8"
+        py="16"
         overflowX="clip"
       >
         <Flex
@@ -103,8 +104,22 @@ export default function Login() {
             <Button type="submit" mt="4" isLoading={isLoading}>
               Submit
             </Button>
-            <Divider borderColor="gray.300" my="2" />
           </form>
+          <Text fontSize="sm" pt="6" color="gray.500">
+            Don't have an account?{" "}
+            <Link as={NextLink} href="/sign-up" color="cyan.600">
+              Create one
+            </Link>
+          </Text>
+          <Link
+            as={NextLink}
+            href="/"
+            fontWeight="bold"
+            color="gray.500"
+            pt="4"
+          >
+            Linkhub
+          </Link>
         </Flex>
       </Box>
     </>

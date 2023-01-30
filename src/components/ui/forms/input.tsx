@@ -7,6 +7,7 @@ import {
   InputLeftAddon,
   Text,
 } from "@chakra-ui/react";
+import { ChangeEventHandler } from "react";
 import {
   FieldError,
   FieldValues,
@@ -31,8 +32,18 @@ export default function CustomInput<T extends FieldValues>({
   error,
   leftAddon,
   size,
+  onChange,
   ...rest
 }: InputProps<T>) {
+  const { onChange: rhfOnChange } = register(name);
+  let newOnChange: ChangeEventHandler<HTMLInputElement> = rhfOnChange;
+  if (onChange) {
+    newOnChange = (e) => {
+      onChange(e);
+      rhfOnChange(e);
+    };
+  }
+
   return (
     <FormControl isInvalid={error as unknown as boolean}>
       <FormLabel htmlFor={name} color="gray.600">
@@ -50,11 +61,18 @@ export default function CustomInput<T extends FieldValues>({
           size={size}
           {...rest}
           {...register(name)}
+          onChange={newOnChange}
         />
       ) : (
         <InputGroup size={size}>
           <InputLeftAddon children={leftAddon} />
-          <Input id={name} bgColor="white" {...rest} {...register(name)} />
+          <Input
+            id={name}
+            bgColor="white"
+            {...rest}
+            {...register(name)}
+            onChange={newOnChange}
+          />
         </InputGroup>
       )}
       <FormErrorMessage>{error && error.message}</FormErrorMessage>

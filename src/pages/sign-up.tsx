@@ -1,14 +1,16 @@
 import Head from "next/head";
-import { Box, Divider, Flex, Heading, Text, useToast } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Box, Flex, Heading, Link, Text, useToast } from "@chakra-ui/react";
 import { SignUpProps, SignUpSchema } from "@/modules/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/forms/input";
 import { useRouter } from "next/router";
-import { signUp } from "@/modules/auth/api";
+import { checkAvailability, signUp } from "@/modules/auth/api";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,12 +27,14 @@ export default function SignUp() {
         status: "error",
         isClosable: true,
       });
-    }
+    },
   });
 
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<SignUpProps>({
     resolver: zodResolver(SignUpSchema),
@@ -39,9 +43,38 @@ export default function SignUp() {
     },
   });
 
+  const onUsernameChange = useDebouncedCallback(async (username: string) => {
+    const { data } = await checkAvailability("username", username);
+    if (!data.ok) {
+      data.errors.forEach((value) =>
+        setError(value.field, {
+          type: "custom",
+          message: value.message,
+        })
+      );
+    } else {
+      clearErrors("username");
+    }
+  }, 1000);
+
+  const onEmailChange = useDebouncedCallback(async (email: string) => {
+    const { data } = await checkAvailability("email", email);
+    if (!data.ok) {
+      data.errors.forEach((value) =>
+        setError(value.field, {
+          type: "custom",
+          message: value.message,
+        })
+      );
+    } else {
+      clearErrors("email");
+    }
+  }, 1000);
+
+
   const onSubmit = handleSubmit((values) => {
     setIsLoading(true);
-    signUpMutation.mutate(values)
+    signUpMutation.mutate(values);
   });
 
   return (
@@ -90,6 +123,7 @@ export default function SignUp() {
               size="sm"
               variant="outline"
               leftAddon="link.hub/"
+              onChange={(e) => onUsernameChange(e.target.value)}
               required
             />
             <Input
@@ -98,6 +132,7 @@ export default function SignUp() {
               placeholder="ex: james@mail.com"
               register={register}
               error={errors.email}
+              onChange={(e) => onEmailChange(e.target.value)}
               size="sm"
               required
             />
@@ -124,12 +159,22 @@ export default function SignUp() {
             <Button type="submit" mt="4" isLoading={isLoading}>
               Submit
             </Button>
-            <Flex align="center" my="1">
-              <Divider borderColor="gray.300" />
-              <Text padding="2" color="gray.300">or</Text>
-              <Divider borderColor="gray.300" />
-            </Flex>
           </form>
+          <Text fontSize="sm" pt="6" color="gray.500">
+            Already have an account?{" "}
+            <Link as={NextLink} href="/login" color="cyan.600">
+              Log in
+            </Link>
+          </Text>
+          <Link
+            as={NextLink}
+            href="/"
+            fontWeight="bold"
+            color="gray.500"
+            pt="4"
+          >
+            Linkhub
+          </Link>
         </Flex>
       </Box>
     </>
