@@ -1,8 +1,8 @@
 import { SignUpProps, User } from "./schema";
 import axios from "@/lib/axios";
 
-export async function signUp(info: SignUpProps): Promise<User> {
-  return await axios.post("/auth/sign-up", info);
+export async function signUp(info: SignUpProps) {
+  return await axios.post<User>("/auth/sign-up", info);
 }
 
 export async function checkAvailability(
