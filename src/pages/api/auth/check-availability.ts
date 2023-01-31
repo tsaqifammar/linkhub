@@ -35,7 +35,7 @@ export default async function handler(
     const userWithUsername = await prisma.user.findUnique({
       where: { username: username as string },
     });
-    if (userWithUsername)
+    if (userWithUsername || ["login", "sign-up", "admin"].includes(username as string))
       errors.push(createError("username", "Username has already been used"));
   }
 
