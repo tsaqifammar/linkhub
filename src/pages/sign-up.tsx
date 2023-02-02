@@ -9,7 +9,7 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/forms/input";
 import { useRouter } from "next/router";
 import { checkAvailability, signUp } from "@/modules/auth/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function SignUp() {
@@ -43,6 +43,11 @@ export default function SignUp() {
     },
   });
 
+  useEffect(() => {
+    if (router.query.username)
+      onUsernameChange(router.query.username as string);
+  }, []);
+
   const onUsernameChange = useDebouncedCallback(async (username: string) => {
     const { data } = await checkAvailability("username", username);
     if (!data.ok) {
@@ -70,7 +75,6 @@ export default function SignUp() {
       clearErrors("email");
     }
   }, 1000);
-
 
   const onSubmit = handleSubmit((values) => {
     setIsLoading(true);
@@ -123,7 +127,9 @@ export default function SignUp() {
               size="sm"
               variant="outline"
               leftAddon="link.hub/"
-              onChange={(e) => onUsernameChange(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value) onUsernameChange(e.target.value);
+              }}
               required
             />
             <Input
@@ -132,7 +138,9 @@ export default function SignUp() {
               placeholder="ex: james@mail.com"
               register={register}
               error={errors.email}
-              onChange={(e) => onEmailChange(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value) onEmailChange(e.target.value);
+              }}
               size="sm"
               required
             />
