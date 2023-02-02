@@ -17,6 +17,7 @@ model User {
   profilePicture  String?
   linkhubColor    String  @default("#000")
   accountProvider String  @default("credentials")
+  visitCount      Int     @default(0)
   links           Link[]
 }
 

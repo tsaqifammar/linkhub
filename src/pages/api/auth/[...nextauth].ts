@@ -5,7 +5,7 @@ import { ZodError } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
