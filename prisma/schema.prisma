@@ -9,15 +9,15 @@ datasource db {
 }
 
 model User {
-  id              String  @id @default(cuid())
-  username        String  @unique
-  email           String  @unique
+  id              String       @id @default(cuid())
+  username        String       @unique
+  email           String       @unique
   name            String?
   password        String
   profilePicture  String?
-  linkhubColor    String  @default("#000")
-  accountProvider String  @default("credentials")
-  visitCount      Int     @default(0)
+  accountProvider String       @default("credentials")
+  visitCount      Int          @default(0)
+  pageSettings    PageSettings?
   links           Link[]
 }
 
@@ -31,6 +31,18 @@ model Link {
   enabled   Boolean @default(true)
   authorId  String
   author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
+}
+
+model PageSettings {
+  id                      String  @id @default(cuid())
+  backgroundIsGradient    Boolean @default(false)
+  linkhubBackgroundColor1 String  @default("#808080")
+  linkhubBackgroundColor2 String  @default("#808080")
+  linkhubTextColor        String  @default("#FFFFFF")
+  authorId                String  @unique
+  author                  User    @relation(fields: [authorId], references: [id])
 
   @@index([authorId])
 }
