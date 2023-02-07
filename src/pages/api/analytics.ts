@@ -1,4 +1,6 @@
 import prisma from "@/lib/prisma";
+import { LinkProps } from "@/modules/admin";
+import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
@@ -23,18 +25,16 @@ export default async function handler(
     const user = await prisma.user.findFirst({
       where: { id: session?.user.id },
     });
-    const totalLinkViews = await prisma.link.aggregate({
-      _sum: {
-        viewCount: true,
-      },
-      where: {
-        authorId: user?.id,
-      },
-    });
+
+    const links = user!.links as Prisma.JsonArray;
+    const totalLinkViews: number = links.reduce(
+      (acc: number, cur: any) => acc + ((cur as LinkProps).viewCount || 0),
+      0
+    );
 
     res.status(200).json({
       visitCount: user?.visitCount || 0,
-      totalLinkViews: totalLinkViews._sum.viewCount || 0,
+      totalLinkViews: totalLinkViews || 0,
     });
   } catch (error) {
     res.status(500);

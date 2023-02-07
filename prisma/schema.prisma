@@ -9,30 +9,16 @@ datasource db {
 }
 
 model User {
-  id              String       @id @default(cuid())
-  username        String       @unique
-  email           String       @unique
+  id              String        @id @default(cuid())
+  username        String        @unique
+  email           String        @unique
   name            String?
   password        String
   profilePicture  String?
-  accountProvider String       @default("credentials")
-  visitCount      Int          @default(0)
+  accountProvider String        @default("credentials")
+  visitCount      Int           @default(0)
   pageSettings    PageSettings?
-  links           Link[]
-}
-
-model Link {
-  id        String  @id @default(cuid())
-  orderNum  Int
-  url       String
-  title     String
-  viewCount Int
-  thumbnail String?
-  enabled   Boolean @default(true)
-  authorId  String
-  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@index([authorId])
+  links           Json          @default("[]") // shape: { id, title, url, viewCount, thumbnail, enabled }[]
 }
 
 model PageSettings {
