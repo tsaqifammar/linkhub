@@ -14,11 +14,10 @@ model User {
   email           String        @unique
   name            String?
   password        String
-  profilePicture  String?
   accountProvider String        @default("credentials")
   visitCount      Int           @default(0)
   pageSettings    PageSettings?
-  links           Json          @default("[]") // shape: { id, title, url, viewCount, thumbnail, enabled }[]
+  links           Json          @default("[]") // shape: { id, title, url, viewCount, enabled }[]
 }
 
 model PageSettings {

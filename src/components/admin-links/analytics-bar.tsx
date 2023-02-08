@@ -3,43 +3,12 @@ import {
   Flex,
   Heading,
   HStack,
-  Text,
-  Icon,
   Show,
-  SkeletonText,
-  Hide,
 } from "@chakra-ui/react";
 import React from "react";
 import { HiOutlineCursorClick, HiOutlineEye } from "react-icons/hi";
-import { IconType } from "react-icons/lib";
 import { useQuery } from "react-query";
-
-interface StatInfoProps {
-  icon: IconType;
-  title: string;
-  value: number;
-  isLoading?: boolean;
-}
-
-function StatInfo({ icon, title, value, isLoading = false }: StatInfoProps) {
-  return (
-    <HStack>
-      <Icon as={icon} color="gray.600" />
-      <SkeletonText
-        isLoaded={!isLoading}
-        noOfLines={1}
-        startColor="cyan.100"
-        endColor="cyan.200"
-      >
-        <Text fontSize={{ base: "xs", sm: "sm" }} color="gray.600">
-          {title}: {value}
-        </Text>
-      </SkeletonText>
-    </HStack>
-  );
-}
-
-const NUMBER_ERROR = 999999;
+import StatInfo from "../ui/stat-info";
 
 export default function AnalyticsBar() {
   const { data, isLoading } = useQuery("analytics", getAnalytics);
@@ -65,13 +34,13 @@ export default function AnalyticsBar() {
           icon={HiOutlineCursorClick}
           title="Linkhub visits"
           isLoading={isLoading}
-          value={data?.data.visitCount ?? NUMBER_ERROR}
+          value={data?.data.visitCount}
         />
         <StatInfo
           icon={HiOutlineEye}
           title="Total link views"
           isLoading={isLoading}
-          value={data?.data.totalLinkViews ?? NUMBER_ERROR}
+          value={data?.data.totalLinkViews}
         />
       </HStack>
     </Flex>

@@ -1,4 +1,5 @@
 import {
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -17,11 +18,12 @@ import {
 
 interface InputProps<T extends FieldValues>
   extends React.ComponentProps<typeof Input> {
-  label: string;
+  label?: string;
   name: Path<T>;
   register: UseFormRegister<T>;
-  error: FieldError | undefined;
+  error?: FieldError | undefined;
   leftAddon?: React.ReactNode;
+  labelPlacement?: "above" | "left";
 }
 
 export default function CustomInput<T extends FieldValues>({
@@ -33,6 +35,7 @@ export default function CustomInput<T extends FieldValues>({
   leftAddon,
   size,
   onChange,
+  labelPlacement = "above",
   ...rest
 }: InputProps<T>) {
   const { onChange: rhfOnChange } = register(name);
@@ -46,36 +49,43 @@ export default function CustomInput<T extends FieldValues>({
 
   return (
     <FormControl isInvalid={error as unknown as boolean}>
-      <FormLabel htmlFor={name} color="gray.600">
-        {label}
-        {required && (
-          <Text as="span" color="red.500">
-            &nbsp;*
-          </Text>
+      <Flex
+        direction={labelPlacement === "above" ? "column" : "row"}
+        alignItems={labelPlacement === "above" ? "initial" : "center"}
+      >
+        {label && (
+          <FormLabel htmlFor={name} color="gray.600" fontSize={size} whiteSpace="nowrap">
+            {label}
+            {required && (
+              <Text as="span" color="red.500">
+                &nbsp;*
+              </Text>
+            )}
+          </FormLabel>
         )}
-      </FormLabel>
-      {!leftAddon ? (
-        <Input
-          id={name}
-          bgColor="white"
-          size={size}
-          {...rest}
-          {...register(name)}
-          onChange={newOnChange}
-        />
-      ) : (
-        <InputGroup size={size}>
-          <InputLeftAddon children={leftAddon} />
+        {!leftAddon ? (
           <Input
             id={name}
             bgColor="white"
+            size={size}
             {...rest}
             {...register(name)}
             onChange={newOnChange}
           />
-        </InputGroup>
-      )}
-      <FormErrorMessage>{error && error.message}</FormErrorMessage>
+        ) : (
+          <InputGroup size={size}>
+            <InputLeftAddon children={leftAddon} />
+            <Input
+              id={name}
+              bgColor="white"
+              {...rest}
+              {...register(name)}
+              onChange={newOnChange}
+            />
+          </InputGroup>
+        )}
+        <FormErrorMessage>{error && error.message}</FormErrorMessage>
+      </Flex>
     </FormControl>
   );
 }

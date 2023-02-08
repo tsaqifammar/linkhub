@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
-import Button from "@/components/ui/button";
 import { HiOutlineMenu } from "react-icons/hi";
 
 interface NavbarProps {
@@ -61,9 +60,10 @@ export default function Navbar({ links, rightNodes, positionType }: NavbarProps)
         py="3"
         {...positionTypeProps}
         wrap="wrap"
-        shadow="sm"
+        border="1px"
+        borderColor="gray.300"
       >
-        <HStack spacing="8" align="center">
+        <HStack spacing="12" align="center">
           <Heading size={{ base: "md", lg: "lg" }}>Linkhub</Heading>
           <Show above="md">
             {links?.map((link, idx) => (
@@ -79,7 +79,7 @@ export default function Navbar({ links, rightNodes, positionType }: NavbarProps)
             ))}
           </Show>
         </HStack>
-        <HStack>
+        <HStack spacing={{ base: "3", lg: "8" }}>
           {rightNodes?.map((node, idx) => (
             <React.Fragment key={idx}>
               {node}
