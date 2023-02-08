@@ -137,8 +137,13 @@ export default function LinksForm() {
   );
 
   return (
-    <form onSubmit={onSubmit}>
-      <Flex direction={{ base: "column", lg: "row-reverse" }} gap="6" mt="4">
+    <form onSubmit={onSubmit} style={{ position: "relative" }}>
+      <Flex
+        direction={{ base: "column", lg: "row-reverse" }}
+        gap="6"
+        mt="4"
+        mb={{ base: "24", lg: "0" }}
+      >
         <Flex
           flexGrow="1"
           flexBasis="0"
@@ -172,7 +177,14 @@ interface LinkCardProps {
   viewCount: number;
 }
 
-function LinkCard({ control, register, index, remove, error, viewCount }: LinkCardProps) {
+function LinkCard({
+  control,
+  register,
+  index,
+  remove,
+  error,
+  viewCount,
+}: LinkCardProps) {
   const deleteDialog = useDisclosure();
 
   return (

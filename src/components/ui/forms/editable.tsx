@@ -61,7 +61,7 @@ export default function CustomEditable<T extends FieldValues>({
           isOpen={!!error?.message}
           bg="red.400"
           fontSize="xs"
-          placement="auto-start"
+          placement="bottom-start"
         >
           <Editable
             isPreviewFocusable={false}
