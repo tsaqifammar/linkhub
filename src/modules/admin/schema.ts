@@ -8,18 +8,17 @@ export type AnalyticsData = {
 export const LinkSchema = z.object({
   id: z.string().optional(),
   url: z.string().url(),
-  title: z.string(),
+  title: z.string().min(1),
   enabled: z.boolean(),
   viewCount: z.number().optional(),
 });
 
 export const AppearanceSchema = z.object({
-  colorMode: z.string(),
+  colorMode: z.string().min(1, "Please select a color mode"),
   linkhubBackgroundColor1: z.string(),
   linkhubBackgroundColor2: z.string().optional(),
   linkhubTextColor: z.string(),
-})
-// .refine(({ colorMode, linkhubBackgroundColor2 }) => colo);
+});
 
 export const LinksFormSchema = z.object({
   links: z.array(LinkSchema),

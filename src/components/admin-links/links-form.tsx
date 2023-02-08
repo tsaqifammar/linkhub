@@ -4,6 +4,9 @@ import {
   useForm,
   Control,
   UseFormRegister,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinkProps, LinksFormProps, LinksFormSchema } from "@/modules/admin";
@@ -16,6 +19,7 @@ import AlertDialog from "@/components/ui/alert-dialog";
 import { HiOutlineEye, HiOutlineTrash, HiPlus } from "react-icons/hi";
 import StatInfo from "../ui/stat-info";
 import { UseFieldArrayRemove } from "react-hook-form/dist/types";
+import SaveResetButton from "../ui/save-reset-button";
 
 const colorModeOptions = [
   { label: "Solid", value: "solid" },
@@ -26,6 +30,7 @@ const emptyLink: LinkProps = {
   enabled: true,
   title: "",
   url: "",
+  viewCount: 0,
 };
 
 export default function LinksForm() {
@@ -34,7 +39,9 @@ export default function LinksForm() {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    reset,
+    getValues,
+    formState: { errors, isDirty },
   } = useForm<LinksFormProps>({
     resolver: zodResolver(LinksFormSchema),
   });
@@ -71,6 +78,7 @@ export default function LinksForm() {
         placeholder="Select option"
         required
         size="sm"
+        error={errors.appearance?.colorMode}
       />
       <Flex w="full" gap="4" justifyContent="flex-start">
         <Input
@@ -121,6 +129,8 @@ export default function LinksForm() {
           register={register}
           index={index}
           remove={remove}
+          error={errors.links?.[index]}
+          viewCount={getValues(`links.${index}.viewCount`) as number}
         />
       ))}
     </Flex>
@@ -129,10 +139,22 @@ export default function LinksForm() {
   return (
     <form onSubmit={onSubmit}>
       <Flex direction={{ base: "column", lg: "row-reverse" }} gap="6" mt="4">
-        <Box flexGrow="1" flexBasis="0">
+        <Flex
+          flexGrow="1"
+          flexBasis="0"
+          direction="column"
+          alignItems="flex-end"
+          gap="4"
+        >
           {appearanceSection}
-          <pre>data{JSON.stringify(watch(), null, 2)}</pre>
-        </Box>
+          <SaveResetButton
+            isDirty={isDirty}
+            onReset={() => {
+              reset();
+              reset({ links: [] });
+            }}
+          />
+        </Flex>
         <Box flexGrow="2" flexBasis="0">
           {linksSection}
         </Box>
@@ -146,9 +168,11 @@ interface LinkCardProps {
   register: UseFormRegister<LinksFormProps>;
   index: number;
   remove: UseFieldArrayRemove;
+  error?: Merge<FieldError, FieldErrorsImpl<LinkProps>> | undefined;
+  viewCount: number;
 }
 
-function LinkCard({ control, register, index, remove }: LinkCardProps) {
+function LinkCard({ control, register, index, remove, error, viewCount }: LinkCardProps) {
   const deleteDialog = useDisclosure();
 
   return (
@@ -163,23 +187,25 @@ function LinkCard({ control, register, index, remove }: LinkCardProps) {
         borderColor="gray.300"
         justifyContent="space-between"
       >
-        <Flex direction="column">
+        <Flex direction="column" alignItems="flex-start">
           <Editable
             control={control}
             name={`links.${index}.title`}
             placeholder="Title"
             fontWeight="bold"
+            error={error?.title}
           />
           <Editable
             control={control}
             name={`links.${index}.url`}
             placeholder="https://example.com"
+            error={error?.url}
           />
         </Flex>
         <Flex direction="column" alignItems="flex-end" w="40">
           <Switch register={register} name={`links.${index}.enabled`} />
           <Flex justifyContent="flex-end" alignItems="center" mt="2" gap="4">
-            <StatInfo icon={HiOutlineEye} />
+            <StatInfo icon={HiOutlineEye} value={viewCount} />
             <Icon
               as={HiOutlineTrash}
               color="gray.600"

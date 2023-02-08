@@ -1,5 +1,5 @@
-import { FormControl, FormLabel, Select, Text } from "@chakra-ui/react";
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { FormControl, FormErrorMessage, FormLabel, Select, Text } from "@chakra-ui/react";
+import { FieldError, FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 interface SelectProps<T extends FieldValues>
   extends React.ComponentProps<typeof Select> {
@@ -7,6 +7,7 @@ interface SelectProps<T extends FieldValues>
   options: { label: string; value: string }[];
   register: UseFormRegister<T>;
   name: Path<T>;
+  error?: FieldError;
 }
 
 export default function CustomSelect<T extends FieldValues>({
@@ -16,10 +17,11 @@ export default function CustomSelect<T extends FieldValues>({
   register,
   name,
   size,
+  error,
   ...rest
 }: SelectProps<T>) {
   return (
-    <FormControl>
+    <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={name} color="gray.600" fontSize={size}>
         {label}
         {required && (
@@ -41,6 +43,7 @@ export default function CustomSelect<T extends FieldValues>({
           </option>
         ))}
       </Select>
+      <FormErrorMessage>{error && error.message}</FormErrorMessage>
     </FormControl>
   );
 }
