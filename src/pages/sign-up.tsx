@@ -15,13 +15,11 @@ import { useDebouncedCallback } from "use-debounce";
 export default function SignUp() {
   const router = useRouter();
   const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const signUpMutation = useMutation(signUp, {
     onSuccess: () => {
       router.push("/login");
     },
     onError: (error) => {
-      setIsLoading(false);
       toast({
         title: (error as any).response.data.message,
         status: "error",
@@ -77,7 +75,6 @@ export default function SignUp() {
   }, 1000);
 
   const onSubmit = handleSubmit((values) => {
-    setIsLoading(true);
     signUpMutation.mutate(values);
   });
 
@@ -164,7 +161,7 @@ export default function SignUp() {
               size="sm"
               required
             />
-            <Button type="submit" mt="4" isLoading={isLoading}>
+            <Button type="submit" mt="4" isLoading={signUpMutation.isLoading}>
               Submit
             </Button>
           </form>
