@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Icon, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, useDisclosure, useToast } from "@chakra-ui/react";
 import {
   useFieldArray,
   useForm,
@@ -9,7 +9,7 @@ import {
   Merge,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LinkProps, LinksFormProps, LinksFormSchema } from "@/modules/admin";
+import { LinkProps, LinksFormProps, LinksFormSchema, updateLinks } from "@/modules/admin";
 import Select from "@/components/ui/forms/select";
 import Input from "@/components/ui/forms/input";
 import Editable from "@/components/ui/forms/editable";
@@ -20,6 +20,7 @@ import { HiOutlineEye, HiOutlineTrash, HiPlus } from "react-icons/hi";
 import StatInfo from "../ui/stat-info";
 import { UseFieldArrayRemove } from "react-hook-form/dist/types";
 import SaveResetButton from "../ui/save-reset-button";
+import { useMutation } from "react-query";
 
 const colorModeOptions = [
   { label: "Solid", value: "solid" },
@@ -34,6 +35,24 @@ const emptyLink: LinkProps = {
 };
 
 export default function LinksForm() {
+  const toast = useToast();
+  const updateLinksMutation = useMutation(updateLinks, {
+    onSuccess: () => {
+      toast({
+        title: "Links succesfully updated.",
+        status: "success",
+        isClosable: true,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: (error as any).response.data.message,
+        status: "error",
+        isClosable: true,
+      });
+    },
+  });
+
   const {
     control,
     register,
@@ -52,7 +71,7 @@ export default function LinksForm() {
   });
 
   const onSubmit = handleSubmit((value) => {
-    console.log("value?", value);
+    updateLinksMutation.mutate(value);
   });
 
   const appearanceSection = (
@@ -153,6 +172,7 @@ export default function LinksForm() {
         >
           {appearanceSection}
           <SaveResetButton
+            isLoading={updateLinksMutation.isLoading}
             isDirty={isDirty}
             onReset={() => {
               reset();

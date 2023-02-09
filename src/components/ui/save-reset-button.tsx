@@ -5,6 +5,7 @@ import { HiOutlineSave } from "react-icons/hi";
 
 interface SaveResetButtonProps {
   onReset: () => void;
+  isLoading?: boolean;
   isDirty?: boolean;
 }
 
@@ -26,6 +27,7 @@ const styles = {
 
 export default function SaveResetButton({
   onReset,
+  isLoading = false,
   isDirty = true,
 }: SaveResetButtonProps) {
   const breakpoint = "lg" as const;
@@ -37,7 +39,7 @@ export default function SaveResetButton({
           <IconButton
             aria-label="Cancel"
             type="button"
-            isDisabled={!isDirty}
+            isDisabled={!isDirty || isLoading}
             icon={<RxReset />}
             zIndex="1"
             {...styles["reset"]}
@@ -47,6 +49,7 @@ export default function SaveResetButton({
             aria-label="Save"
             type="submit"
             isDisabled={!isDirty}
+            isLoading={isLoading}
             icon={<HiOutlineSave />}
             zIndex="1"
             {...styles["save"]}
@@ -55,13 +58,13 @@ export default function SaveResetButton({
       </Hide>
       <Hide below={breakpoint}>
         <Flex gap="4">
-          <Button type="submit" isDisabled={!isDirty}>
+          <Button type="submit" isDisabled={!isDirty} isLoading={isLoading}>
             Save
           </Button>
           <Button
             type="button"
             variant="outline"
-            isDisabled={!isDirty}
+            isDisabled={!isDirty || isLoading}
             onClick={onReset}
           >
             Reset
