@@ -9,7 +9,7 @@ import {
   Merge,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LinkProps, LinksFormProps, LinksFormSchema, updateLinks } from "@/modules/admin";
+import { getLinks, LinkProps, LinksFormProps, LinksFormSchema, updateLinks } from "@/modules/admin";
 import Select from "@/components/ui/forms/select";
 import Input from "@/components/ui/forms/input";
 import Editable from "@/components/ui/forms/editable";
@@ -21,6 +21,7 @@ import StatInfo from "../ui/stat-info";
 import { UseFieldArrayRemove } from "react-hook-form/dist/types";
 import SaveResetButton from "../ui/save-reset-button";
 import { useMutation } from "react-query";
+import { Session } from "next-auth";
 
 const colorModeOptions = [
   { label: "Solid", value: "solid" },
@@ -34,7 +35,7 @@ const emptyLink: LinkProps = {
   viewCount: 0,
 };
 
-export default function LinksForm() {
+export default function LinksForm({ session }: { session: Session }) {
   const toast = useToast();
   const updateLinksMutation = useMutation(updateLinks, {
     onSuccess: () => {
@@ -63,6 +64,7 @@ export default function LinksForm() {
     formState: { errors, isDirty },
   } = useForm<LinksFormProps>({
     resolver: zodResolver(LinksFormSchema),
+    defaultValues: async () => getLinks(session?.user.username),
   });
 
   const { fields, prepend, remove } = useFieldArray({
@@ -176,7 +178,6 @@ export default function LinksForm() {
             isDirty={isDirty}
             onReset={() => {
               reset();
-              reset({ links: [] });
             }}
           />
         </Flex>

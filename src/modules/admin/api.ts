@@ -11,3 +11,9 @@ export async function updateLinks(data: LinksFormProps) {
     data
   );
 }
+
+export async function getLinks(username: string) {
+  const response = await axios.get<LinksFormProps>(`/links/${username}`);
+  const linksFormInfo = response.data;
+  return linksFormInfo;
+};

@@ -1,0 +1,62 @@
+import prisma from "@/lib/prisma";
+import { z } from "zod";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
+import { LinkSchema } from "@/modules/admin";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "GET") {
+    res
+      .status(400)
+      .json({ message: "Only GET method is available for this endpoint" });
+  }
+
+  const { username } = req.query as { username: string };
+
+  try {
+    const session = await unstable_getServerSession(req, res, authOptions);
+
+    const linksInfo = await prisma.user.findUnique({
+      where: { username },
+      select: {
+        appearanceSettings: {
+          select: {
+            colorMode: true,
+            linkhubBackgroundColor1: true,
+            linkhubBackgroundColor2: true,
+            linkhubTextColor: true,
+          },
+        },
+        links: true,
+      },
+    });
+
+    if (!linksInfo) {
+      res.status(404).json({ message: "Username not found" });
+    }
+    console.log("session?", JSON.stringify(session, null, 2));
+    console.log("linksInfo?", JSON.stringify(linksInfo, null, 2));
+
+    let links = z.array(LinkSchema).parse(linksInfo?.links);
+    links = links.filter((item) => item.enabled);
+
+    if (!session || session.user.username !== username) {
+      links.forEach((item) => {
+        delete item.viewCount;
+      });
+    }
+
+    res.status(200).json({
+      links,
+      appearance: linksInfo?.appearanceSettings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}

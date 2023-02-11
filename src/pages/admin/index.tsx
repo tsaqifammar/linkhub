@@ -15,6 +15,7 @@ import Button from "@/components/ui/button";
 import { HiOutlineLogout } from "react-icons/hi";
 import AnalyticsBar from "@/components/admin-links/analytics-bar";
 import LinksForm from "@/components/admin-links/links-form";
+import { Session } from "next-auth";
 
 export default function Admin() {
   const { data: session, status } = useSession();
@@ -75,7 +76,7 @@ export default function Admin() {
           ) : (
             <Box my="4" minW="full">
               <AnalyticsBar />
-              <LinksForm />
+              <LinksForm session={session as Session} />
             </Box>
           )}
         </Flex>

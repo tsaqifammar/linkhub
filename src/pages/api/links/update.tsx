@@ -27,9 +27,9 @@ export default async function handler(
     const updatedUserInfo = await prisma.user.update({
       data: {
         links: links,
-        pageSettings: {
+        appearanceSettings: {
           update: {
-            backgroundIsGradient: appearance.colorMode === "gradient",
+            colorMode: appearance.colorMode,
             linkhubBackgroundColor1: appearance.linkhubBackgroundColor1,
             linkhubBackgroundColor2: appearance.linkhubBackgroundColor2,
             linkhubTextColor: appearance.linkhubTextColor,
@@ -42,7 +42,7 @@ export default async function handler(
       select: {
         username: true,
         links: true,
-        pageSettings: true,
+        appearanceSettings: true,
       }
     });
 
