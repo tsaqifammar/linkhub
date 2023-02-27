@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "GET") {
-    res
+    return res
       .status(400)
       .json({ message: "Only GET method is available for this endpoint" });
   }
@@ -36,21 +36,19 @@ export default async function handler(
     });
 
     if (!linksInfo) {
-      res.status(404).json({ message: "Username not found" });
+      return res.status(404).json({ message: "Username not found" });
     }
-    console.log("session?", JSON.stringify(session, null, 2));
-    console.log("linksInfo?", JSON.stringify(linksInfo, null, 2));
 
     let links = z.array(LinkSchema).parse(linksInfo?.links);
-    links = links.filter((item) => item.enabled);
 
     if (!session || session.user.username !== username) {
+      links = links.filter((item) => item.enabled);
       links.forEach((item) => {
         delete item.viewCount;
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       links,
       appearance: linksInfo?.appearanceSettings,
     });
