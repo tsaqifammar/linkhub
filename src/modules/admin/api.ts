@@ -17,3 +17,11 @@ export async function getLinks(username: string) {
   const linksFormInfo = response.data;
   return linksFormInfo;
 };
+
+export async function incrementLinkView(username: string, index: number, url: string) {
+  await axios.put("/analytics/increment-link-view", {
+    username,
+    index,
+    url
+  });
+}

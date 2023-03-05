@@ -10,7 +10,7 @@ export const LinkSchema = z.object({
   url: z.string().url(),
   title: z.string().min(1),
   enabled: z.boolean(),
-  viewCount: z.number().optional(),
+  viewCount: z.number(),
 });
 
 export const AppearanceSchema = z.object({

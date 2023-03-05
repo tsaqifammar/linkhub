@@ -1,4 +1,4 @@
-import { LinksFormProps } from "@/modules/admin";
+import { incrementLinkView, LinksFormProps } from "@/modules/admin";
 import NextLink from "next/link";
 import {
   Avatar,
@@ -16,6 +16,7 @@ interface LinksViewProps {
 }
 
 export default function LinksView(props: LinksViewProps) {
+  const username = props.username;
   const { links, appearance } = props.links;
   const backgroundProps =
     appearance.colorMode === "solid"
@@ -42,13 +43,18 @@ export default function LinksView(props: LinksViewProps) {
         alignItems="center"
         gap="5"
       >
-        <Avatar name={props.username} size="lg" bgColor="black" />
+        <Avatar name={username} size="lg" />
         <Heading size="md" my="4">
-          @{props.username}
+          @{username}
         </Heading>
         {links.map((link, idx) =>
           link.enabled ? (
-            <LinkCard key={idx} title={link.title} url={link.url} />
+            <LinkCard
+              key={idx}
+              title={link.title}
+              url={link.url}
+              onClick={() => incrementLinkView(username, idx + 1, link.url)}
+            />
           ) : null
         )}
         <Link
@@ -68,9 +74,10 @@ export default function LinksView(props: LinksViewProps) {
 interface LinkCardProps {
   url: string;
   title: string;
+  onClick: () => void;
 }
 
-function LinkCard({ url, title }: LinkCardProps) {
+function LinkCard({ url, title, onClick }: LinkCardProps) {
   return (
     <LinkBox
       backgroundColor="white"
@@ -81,6 +88,7 @@ function LinkCard({ url, title }: LinkCardProps) {
       textAlign="center"
       border="1px"
       borderColor="gray.300"
+      onClick={onClick}
     >
       <Heading size="sm" my="2" color="black">
         <LinkOverlay href={url} target="_blank">

@@ -37,6 +37,6 @@ export default async function handler(
       totalLinkViews: totalLinkViews || 0,
     });
   } catch (error) {
-    res.status(500);
+    res.status(500).end();
   }
 }
