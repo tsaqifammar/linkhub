@@ -25,3 +25,7 @@ export async function incrementLinkView(username: string, index: number, url: st
     url
   });
 }
+
+export async function incrementLinkhubVisit(username: string) {
+  await axios.put("/analytics/increment-linkhub-visit", { username });
+}

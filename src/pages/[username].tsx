@@ -1,11 +1,12 @@
 import LinksView from "@/components/admin-links/links-view";
 import prisma from "@/lib/prisma";
-import { getLinks, LinksFormProps } from "@/modules/admin";
+import { getLinks, incrementLinkhubVisit, LinksFormProps } from "@/modules/admin";
 import { Box } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
+import { useEffect } from "react";
 
 interface Params extends ParsedUrlQuery { username: string; };
 
@@ -31,6 +32,10 @@ export const getStaticProps: GetStaticProps<LinksFormProps, Params> = async (con
 const Linkhub: NextPage<LinksFormProps> = (props) => {
   const { query } = useRouter();
   const username: string = query.username as string;
+
+  useEffect(() => {
+    incrementLinkhubVisit(username);
+  }, []);
 
   return (
     <>
