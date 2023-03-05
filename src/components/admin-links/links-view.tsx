@@ -10,7 +10,7 @@ import {
   LinkOverlay,
 } from "@chakra-ui/react";
 
-interface LinksViewProps {
+export interface LinksViewProps {
   username: string;
   links: LinksFormProps;
 }

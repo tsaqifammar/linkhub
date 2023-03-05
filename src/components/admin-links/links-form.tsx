@@ -1,4 +1,11 @@
-import { Box, Flex, Heading, Icon, useDisclosure, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Icon,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import {
   useFieldArray,
   useForm,
@@ -9,7 +16,13 @@ import {
   Merge,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getLinks, LinkProps, LinksFormProps, LinksFormSchema, updateLinks } from "@/modules/admin";
+import {
+  getLinks,
+  LinkProps,
+  LinksFormProps,
+  LinksFormSchema,
+  updateLinks,
+} from "@/modules/admin";
 import Select from "@/components/ui/forms/select";
 import Input from "@/components/ui/forms/input";
 import Editable from "@/components/ui/forms/editable";
@@ -22,6 +35,7 @@ import { UseFieldArrayRemove } from "react-hook-form/dist/types";
 import SaveResetButton from "../ui/save-reset-button";
 import { useMutation } from "react-query";
 import { Session } from "next-auth";
+import { PreviewButton } from "./preview-button";
 
 const colorModeOptions = [
   { label: "Solid", value: "solid" },
@@ -163,7 +177,7 @@ export default function LinksForm({ session }: { session: Session }) {
         direction={{ base: "column", lg: "row-reverse" }}
         gap="6"
         mt="4"
-        mb={{ base: "24", lg: "0" }}
+        mb="24"
       >
         <Flex
           flexGrow="1"
@@ -183,6 +197,7 @@ export default function LinksForm({ session }: { session: Session }) {
         </Flex>
         <Box flexGrow="2" flexBasis="0">
           {linksSection}
+          <PreviewButton username={session.user.username} links={watch()} />
         </Box>
       </Flex>
     </form>
@@ -235,7 +250,7 @@ function LinkCard({
             error={error?.url}
           />
         </Flex>
-        <Flex direction="column" alignItems="flex-end" w="40">
+        <Flex direction="column" alignItems="flex-end">
           <Switch register={register} name={`links.${index}.enabled`} />
           <Flex justifyContent="flex-end" alignItems="center" mt="2" gap="4">
             <StatInfo icon={HiOutlineEye} value={viewCount} />

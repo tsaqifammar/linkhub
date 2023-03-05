@@ -11,7 +11,13 @@ export default function CustomButton({
 }: ChakraButtonProps) {
   if (variant === "outline") {
     return (
-      <Button variant="outline" colorScheme="cyan" {...rest}>
+      <Button
+        variant="outline"
+        colorScheme="cyan"
+        backgroundColor="white"
+        _hover={{ backgroundColor: "gray.100" }}
+        {...rest}
+      >
         {children}
       </Button>
     );

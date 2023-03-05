@@ -69,7 +69,7 @@ export default function CustomEditable<T extends FieldValues>({
             placeholder={placeholder}
             value={controlProps.field.value}
           >
-            <EditablePreview mr="2" fontWeight={fontWeight} fontSize="sm" />
+            <EditablePreview mr="2" fontWeight={fontWeight} overflowWrap="anywhere" fontSize="sm" />
             <Input
               as={EditableInput}
               variant="flushed"
