@@ -1,54 +1,17 @@
 import Head from "next/head";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import {
-  Avatar,
   Box,
   Flex,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spinner,
 } from "@chakra-ui/react";
-import Navbar from "@/components/ui/navbar";
-import Button from "@/components/ui/button";
-import { HiOutlineLogout } from "react-icons/hi";
 import AnalyticsBar from "@/components/admin-links/analytics-bar";
 import LinksForm from "@/components/admin-links/links-form";
 import { Session } from "next-auth";
+import AdminNavbar from "@/components/admin-links/navbar";
 
 export default function Admin() {
   const { data: session, status } = useSession();
-  const currentUser = session?.user;
-
-  const navLinks = [
-    { text: "Links", href: "/admin" },
-    { text: "Settings", href: "/admin/settings" },
-  ];
-
-  const rightComponents = [
-    <Button variant="outline" size={{ base: "sm", lg: "md" }}>
-      Share
-    </Button>,
-    <Menu>
-      <MenuButton>
-        <Avatar
-          name={currentUser?.username}
-          size={{ base: "sm", lg: "md" }}
-          cursor="pointer"
-        />
-      </MenuButton>
-      <MenuList>
-        <MenuItem
-          color="red.600"
-          icon={<HiOutlineLogout />}
-          onClick={() => signOut()}
-        >
-          Log out
-        </MenuItem>
-      </MenuList>
-    </Menu>,
-  ];
 
   return (
     <>
@@ -66,11 +29,7 @@ export default function Admin() {
         overflowX="clip"
       >
         <Flex w="95%" mx="auto" direction="column" alignItems="center">
-          <Navbar
-            positionType="block"
-            links={navLinks}
-            rightNodes={rightComponents}
-          />
+          <AdminNavbar />
           {status === "loading" ? (
             <Spinner size="lg" mt="16"/>
           ) : (
