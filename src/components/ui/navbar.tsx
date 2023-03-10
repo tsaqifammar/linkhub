@@ -19,6 +19,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { HiOutlineMenu } from "react-icons/hi";
 
@@ -29,6 +30,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ links, rightNodes, positionType }: NavbarProps) {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navLinks = [
     { text: "Features", href: "#features" },
@@ -72,7 +74,7 @@ export default function Navbar({ links, rightNodes, positionType }: NavbarProps)
                 as={NextLink}
                 href={link.href}
                 fontSize={{ base: "sm", lg: "md" }}
-                color="gray.600"
+                color={router.pathname  === link.href ? "gray.800" : "gray.600"}
               >
                 {link.text}
               </Link>
