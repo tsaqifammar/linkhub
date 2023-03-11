@@ -10,6 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Button from "@/components/ui/button";
+import FadeInWhenVisible from "@/components/ui/animation/fade-in-when-visible";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -43,39 +44,45 @@ export default function Hero() {
             pb="6"
             zIndex="2"
           >
-            <Heading color="whiteAlpha.900" size="2xl" maxW="18ch">
-              All of who you are, condensed into a single link.
-            </Heading>
-            <Text color="whiteAlpha.900" fontSize="md" maxW="40ch">
-              Connect with others and promote your creations, content, &
-              products with a single bio link.
-            </Text>
-            <Flex
-              direction={{ base: "column", lg: "row" }}
-              justifyContent="space-between"
-              gap="5"
-            >
-              <InputGroup size="md" maxW={{ lg: "64" }}>
-                <InputLeftAddon children="link.hub/" />
-                <Input
-                  placeholder="yourname"
-                  backgroundColor="whiteAlpha.900"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </InputGroup>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push({
-                    pathname: "/sign-up",
-                    query: { username: name },
-                  });
-                }}
+            <FadeInWhenVisible>
+              <Heading color="whiteAlpha.900" size="2xl" maxW="18ch">
+                All of who you are, condensed into a single link.
+              </Heading>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <Text color="whiteAlpha.900" fontSize="md" maxW="40ch">
+                Connect with others and promote your creations, content, &
+                products with a single bio link.
+              </Text>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <Flex
+                direction={{ base: "column", lg: "row" }}
+                justifyContent="space-between"
+                gap="5"
               >
-                Claim your linkhub
-              </Button>
-            </Flex>
+                <InputGroup size="md" maxW={{ lg: "64" }}>
+                  <InputLeftAddon children="link.hub/" />
+                  <Input
+                    placeholder="yourname"
+                    backgroundColor="whiteAlpha.900"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </InputGroup>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push({
+                      pathname: "/sign-up",
+                      query: { username: name },
+                    });
+                  }}
+                >
+                  Claim your linkhub
+                </Button>
+              </Flex>
+            </FadeInWhenVisible>
           </Flex>
           <Image
             position={{ lg: "absolute" }}
@@ -85,6 +92,7 @@ export default function Hero() {
             alt="Product illustration"
             minW={{ lg: "950px" }}
             mr={{ base: "0", lg: "-96" }}
+            className="fade-in-to-left"
           />
         </Grid>
       </Box>

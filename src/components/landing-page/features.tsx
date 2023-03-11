@@ -3,6 +3,7 @@ import Image from "next/image";
 import featureImage1 from "../../../public/images/feature1.svg";
 import featureImage2 from "../../../public/images/feature2.svg";
 import featureImage3 from "../../../public/images/feature3.svg";
+import FadeInWhenVisible from "../ui/animation/fade-in-when-visible";
 
 interface FeatureItem {
   image: string;
@@ -43,7 +44,9 @@ export default function Features() {
           py="12"
         >
           {featuresData.map((item, idx) => (
-            <FeatureItemCard key={idx} {...item} />
+            <FadeInWhenVisible directionTo="up">
+              <FeatureItemCard key={idx} {...item} />
+            </FadeInWhenVisible>
           ))}
         </Flex>
       </Box>

@@ -10,6 +10,7 @@ import {
 import Button from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import FadeInWhenVisible from "../ui/animation/fade-in-when-visible";
 
 export default function Footer() {
   return (
@@ -35,62 +36,67 @@ function UpperSection() {
         <Flex
           direction={{ base: "column", lg: "row" }}
           justifyContent="space-between"
+          alignItems="center"
           gap="10"
         >
-          <Heading
-            maxW="25ch"
-            color="whiteAlpha.900"
-            textAlign={{ base: "center", lg: "left" }}
-          >
-            Start building your online presence{" "}
-            <Box
-              as="span"
-              position="relative"
-              zIndex="1"
-              _after={{
-                content: `""`,
-                display: "block",
-                position: "absolute",
-                bottom: "-1",
-                right: "1",
-                zIndex: "-1",
-                bgColor: "cyan.700",
-                w: "4ch",
-                h: "2",
-              }}
+          <FadeInWhenVisible directionTo="right">
+            <Heading
+              maxW="25ch"
+              color="whiteAlpha.900"
+              textAlign={{ base: "center", lg: "left" }}
             >
-              today
-            </Box>
-            .
-          </Heading>
-          <Flex
-            direction={{ base: "column", lg: "row" }}
-            align="center"
-            justifyContent="space-between"
-            gap="5"
-          >
-            <InputGroup size="lg" maxW={{ lg: "64" }}>
-              <InputLeftAddon children="link.hub/" />
-              <Input
-                placeholder="yourname"
-                backgroundColor="whiteAlpha.900"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </InputGroup>
-            <Button
-              size="lg"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push({
-                  pathname: "/sign-up",
-                  query: { username: name },
-                });
-              }}
+              Start building your online presence{" "}
+              <Box
+                as="span"
+                position="relative"
+                zIndex="1"
+                _after={{
+                  content: `""`,
+                  display: "block",
+                  position: "absolute",
+                  bottom: "-1",
+                  right: "1",
+                  zIndex: "-1",
+                  bgColor: "cyan.700",
+                  w: "4ch",
+                  h: "2",
+                }}
+              >
+                today
+              </Box>
+              .
+            </Heading>
+          </FadeInWhenVisible>
+          <FadeInWhenVisible directionTo="left">
+            <Flex
+              direction={{ base: "column", lg: "row" }}
+              align="center"
+              justifyContent="space-between"
+              gap="5"
             >
-              Claim your linkhub
-            </Button>
-          </Flex>
+              <InputGroup size="lg" maxW={{ lg: "64" }}>
+                <InputLeftAddon children="link.hub/" />
+                <Input
+                  placeholder="yourname"
+                  backgroundColor="whiteAlpha.900"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </InputGroup>
+              <Button
+                size="lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push({
+                    pathname: "/sign-up",
+                    query: { username: name },
+                  });
+                }}
+              >
+                Claim your linkhub
+              </Button>
+            </Flex>
+          </FadeInWhenVisible>
         </Flex>
       </Box>
     </Box>
