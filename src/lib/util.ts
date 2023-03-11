@@ -5,3 +5,8 @@ export function capitalizeEachWord(text: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+export function reloadSession() {
+  const event = new Event("visibilitychange");
+  document.dispatchEvent(event);
+};

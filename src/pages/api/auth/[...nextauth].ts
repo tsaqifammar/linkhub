@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { LoginProps, LoginSchema } from "@/modules/auth";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -5,7 +6,9 @@ import { ZodError } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "@/lib/prisma";
 
-export const authOptions: NextAuthOptions = {
+type CreateAuthOptions = (req: NextApiRequest) => NextAuthOptions;
+
+export const createAuthOptions: CreateAuthOptions = (req) => ({
   session: {
     strategy: "jwt",
   },
@@ -47,18 +50,29 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   callbacks: {
-    jwt({ token, user }) {
-      // @ts-ignore
-      if (user?.username) token.username = user?.username;
+    async jwt({ token, user }) {
+      if (req.query.update) {
+        const username = req.query.username as string;
+        const user = await prisma.user.findUnique({ where: { username }});
+        if (user) token.username = user.username;
+      }
+      if (user) {
+        token.id = user.id;
+        // @ts-ignore
+        token.username = user?.username;
+      }
       return token;
     },
     async session({ session, token }) {
+      session.user.id = token.id as string;
       if (token?.username) {
         session.user.username = token.username as string;
       }
-      return session;
+      return Promise.resolve(session);
     },
-  }
-};
+  },
+});
 
-export default NextAuth(authOptions);
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  return NextAuth(req, res, createAuthOptions(req));
+}

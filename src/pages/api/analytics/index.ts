@@ -1,9 +1,8 @@
 import prisma from "@/lib/prisma";
+import { getServerSession } from "@/lib/session";
 import { LinkProps } from "@/modules/admin";
 import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +15,7 @@ export default async function handler(
   }
 
   try {
-    const session = await unstable_getServerSession(req, res, authOptions);
+    const session = await getServerSession(req, res);
 
     if (!session) {
       res.status(401).json({ message: "You must be logged in" });

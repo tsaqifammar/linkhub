@@ -1,9 +1,8 @@
 import prisma from "@/lib/prisma";
 import { z } from "zod";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
 import { LinkSchema } from "@/modules/admin";
+import { getServerSession } from "@/lib/session";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +17,7 @@ export default async function handler(
   const { username } = req.query as { username: string };
 
   try {
-    const session = await unstable_getServerSession(req, res, authOptions);
+    const session = await getServerSession(req, res);
 
     const linksInfo = await prisma.user.findUnique({
       where: { username },
