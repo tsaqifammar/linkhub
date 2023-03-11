@@ -25,6 +25,12 @@ export const LinksFormSchema = z.object({
   appearance: AppearanceSchema,
 });
 
+export const SettingsSchema = z.object({
+  username: z.string(),
+  name: z.string().optional(),
+});
+
 export type LinkProps = z.infer<typeof LinkSchema>;
 export type AppearanceProps = z.infer<typeof AppearanceSchema>;
 export type LinksFormProps = z.infer<typeof LinksFormSchema>;
+export type SettingsProps = z.infer<typeof SettingsSchema>;
