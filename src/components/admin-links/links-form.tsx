@@ -3,6 +3,7 @@ import {
   Flex,
   Heading,
   Icon,
+  IconButton,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -30,8 +31,12 @@ import Switch from "@/components/ui/forms/switch";
 import Button from "@/components/ui/button";
 import AlertDialog from "@/components/ui/alert-dialog";
 import { HiOutlineEye, HiOutlineTrash, HiPlus } from "react-icons/hi";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import StatInfo from "../ui/stat-info";
-import { UseFieldArrayRemove } from "react-hook-form/dist/types";
+import {
+  UseFieldArrayRemove,
+  UseFieldArraySwap,
+} from "react-hook-form/dist/types";
 import SaveResetButton from "../ui/save-reset-button";
 import { useMutation } from "react-query";
 import { Session } from "next-auth";
@@ -81,7 +86,7 @@ export default function LinksForm({ session }: { session: Session }) {
     defaultValues: async () => getLinks(session?.user.username),
   });
 
-  const { fields, prepend, remove } = useFieldArray({
+  const { fields, prepend, remove, swap } = useFieldArray({
     control,
     name: "links",
   });
@@ -164,8 +169,10 @@ export default function LinksForm({ session }: { session: Session }) {
           register={register}
           index={index}
           remove={remove}
+          swap={swap}
           error={errors.links?.[index]}
           viewCount={getValues(`links.${index}.viewCount`) as number}
+          isLast={index === fields.length - 1}
         />
       ))}
     </Flex>
@@ -209,8 +216,10 @@ interface LinkCardProps {
   register: UseFormRegister<LinksFormProps>;
   index: number;
   remove: UseFieldArrayRemove;
+  swap: UseFieldArraySwap;
   error?: Merge<FieldError, FieldErrorsImpl<LinkProps>> | undefined;
   viewCount: number;
+  isLast: boolean;
 }
 
 function LinkCard({
@@ -219,7 +228,9 @@ function LinkCard({
   index,
   remove,
   error,
+  swap,
   viewCount,
+  isLast,
 }: LinkCardProps) {
   const deleteDialog = useDisclosure();
 
@@ -234,8 +245,25 @@ function LinkCard({
         border="1px"
         borderColor="gray.300"
         justifyContent="space-between"
+        gap={4}
       >
-        <Flex direction="column" alignItems="flex-start">
+        <Flex direction="column" gap={1} justifyContent="space-between" flexGrow="0">
+          <IconButton
+            aria-label="Move up"
+            icon={<FaChevronUp />}
+            onClick={() => swap(index, index - 1)}
+            isDisabled={index === 0}
+            size="xs"
+          />
+          <IconButton
+            aria-label="Move down"
+            icon={<FaChevronDown />}
+            onClick={() => swap(index, index + 1)}
+            isDisabled={isLast}
+            size="xs"
+          />
+        </Flex>
+        <Flex direction="column" alignItems="flex-start" flexGrow="1">
           <Editable
             control={control}
             name={`links.${index}.title`}
