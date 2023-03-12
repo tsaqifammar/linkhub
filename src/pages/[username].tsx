@@ -50,6 +50,9 @@ export const getStaticProps: GetStaticProps<LinksFormProps, Params> = async (
       links: true,
     },
   });
+
+  if (!linksInfo) return { notFound: true };
+
   let links = z.array(LinkSchema).parse(linksInfo?.links);
   links = links.filter((item) => item.enabled);
   links.forEach((item) => {

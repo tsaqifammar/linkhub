@@ -29,7 +29,7 @@ export default async function handler(
       select: { username: true, name: true },
     });
 
-    await res.revalidate(`/${updatedUserInfo.username}`);
+    await res.revalidate(`/${session?.user.username}`);
     await res.revalidate(`/${username}`);
     res.status(200).json(updatedUserInfo);
   } catch (error) {
