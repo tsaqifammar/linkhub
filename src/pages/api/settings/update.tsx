@@ -30,7 +30,6 @@ export default async function handler(
     });
 
     await res.revalidate(`/${session?.user.username}`);
-    await res.revalidate(`/${username}`);
     res.status(200).json(updatedUserInfo);
   } catch (error) {
     if (error instanceof ZodError) {
