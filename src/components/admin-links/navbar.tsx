@@ -1,7 +1,6 @@
 import { signOut, useSession } from "next-auth/react";
 import {
   Avatar,
-  Button,
   Menu,
   MenuButton,
   MenuItem,
@@ -10,6 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { HiOutlineLogout, HiOutlineShare } from "react-icons/hi";
+import Button from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
 
 export default function AdminNavbar() {
@@ -55,12 +55,9 @@ export default function AdminNavbar() {
 function ShareButton(props: { username: string }) {
   const toast = useToast();
   const url = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const { onCopy, value } = useClipboard(`${url}/${props.username}`);
+  const { onCopy } = useClipboard(`${url}/${props.username}`);
 
   const handleClick = () => {
-    console.log("env?", process.env.NEXT_PUBLIC_BASE_URL);
-    console.log("url?", url);
-    console.log("value?", value);
     onCopy();
     toast({
       title: "Link successfully copied!",
