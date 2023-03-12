@@ -1,14 +1,23 @@
 import LinksView from "@/components/admin-links/links-view";
 import prisma from "@/lib/prisma";
-import { getLinks, incrementLinkhubVisit, LinksFormProps } from "@/modules/admin";
+import {
+  AppearanceProps,
+  getLinks,
+  incrementLinkhubVisit,
+  LinkSchema,
+  LinksFormProps,
+} from "@/modules/admin";
 import { Box } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect } from "react";
+import { z } from "zod";
 
-interface Params extends ParsedUrlQuery { username: string; };
+interface Params extends ParsedUrlQuery {
+  username: string;
+}
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const users = await prisma.user.findMany();
@@ -23,11 +32,37 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<LinksFormProps, Params> = async (context) => {
+export const getStaticProps: GetStaticProps<LinksFormProps, Params> = async (
+  context
+) => {
   const { username } = context.params!;
-  const links = await getLinks(username);
-  return { props: links };
-}
+  const linksInfo = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      appearanceSettings: {
+        select: {
+          colorMode: true,
+          linkhubBackgroundColor1: true,
+          linkhubBackgroundColor2: true,
+          linkhubTextColor: true,
+        },
+      },
+      links: true,
+    },
+  });
+  let links = z.array(LinkSchema).parse(linksInfo?.links);
+  links = links.filter((item) => item.enabled);
+  links.forEach((item) => {
+    // @ts-ignore
+    delete item.viewCount;
+  });
+  return {
+    props: {
+      links,
+      appearance: (linksInfo?.appearanceSettings as AppearanceProps),
+    },
+  };
+};
 
 const Linkhub: NextPage<LinksFormProps> = (props) => {
   const { query } = useRouter();
@@ -50,6 +85,6 @@ const Linkhub: NextPage<LinksFormProps> = (props) => {
       </Box>
     </>
   );
-}
+};
 
 export default Linkhub;
