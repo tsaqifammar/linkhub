@@ -17,6 +17,7 @@ A [linktree](https://linktr.ee/) clone built with Next.js.
 * Database: [MySQL](https://www.mysql.com/)
 * Component library: [Chakra.ui](https://chakra-ui.com/)
 * Authentication: [NextAuth](https://next-auth.js.org/)
+* Data fetching: [React Query](https://react-query-v3.tanstack.com/)
 * Forms: [react-hook-form](https://react-hook-form.com/)
 * Schema Validation: [Zod](https://github.com/colinhacks/zod)
 * Animations: [Framer Motion](https://www.framer.com/motion/)
