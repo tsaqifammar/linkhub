@@ -73,6 +73,8 @@ export const createAuthOptions: CreateAuthOptions = (req) => ({
   },
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return NextAuth(req, res, createAuthOptions(req));
 }
+
+export default handler;

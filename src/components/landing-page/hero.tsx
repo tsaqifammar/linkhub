@@ -62,7 +62,7 @@ export default function Hero() {
                 gap="5"
               >
                 <InputGroup size="md" maxW={{ lg: "64" }}>
-                  <InputLeftAddon children="link.hub/" />
+                  <InputLeftAddon>link.hub/</InputLeftAddon>
                   <Input
                     placeholder="yourname"
                     backgroundColor="whiteAlpha.900"

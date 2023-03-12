@@ -75,7 +75,7 @@ function UpperSection() {
               gap="5"
             >
               <InputGroup size="lg" maxW={{ lg: "64" }}>
-                <InputLeftAddon children="link.hub/" />
+                <InputLeftAddon>link.hub/</InputLeftAddon>
                 <Input
                   placeholder="yourname"
                   backgroundColor="whiteAlpha.900"

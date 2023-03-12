@@ -44,8 +44,8 @@ export default function Features() {
           py="12"
         >
           {featuresData.map((item, idx) => (
-            <FadeInWhenVisible directionTo="up">
-              <FeatureItemCard key={idx} {...item} />
+            <FadeInWhenVisible key={idx} directionTo="up">
+              <FeatureItemCard {...item} />
             </FadeInWhenVisible>
           ))}
         </Flex>

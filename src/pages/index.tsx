@@ -15,12 +15,12 @@ export default function LandingPage() {
   ];
 
   const rightComponents = [
-    <Link href="/login">
+    <Link key={0} href="/login">
       <Button variant="outline" size={{ base: "sm", lg: "md" }}>
         Log In
       </Button>
     </Link>,
-    <Link href="/sign-up">
+    <Link key={1} href="/sign-up">
       <Button variant="solid" size={{ base: "sm", lg: "md" }}>
         Sign Up
       </Button>

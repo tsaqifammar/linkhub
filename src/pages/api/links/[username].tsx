@@ -43,6 +43,7 @@ export default async function handler(
     if (!session || session.user.username !== username) {
       links = links.filter((item) => item.enabled);
       links.forEach((item) => {
+        // @ts-ignore
         delete item.viewCount;
       });
     }

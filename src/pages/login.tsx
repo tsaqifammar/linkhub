@@ -106,7 +106,7 @@ export default function Login() {
             </Button>
           </form>
           <Text fontSize="sm" pt="6" color="gray.500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link as={NextLink} href="/sign-up" color="cyan.600">
               Create one
             </Link>

@@ -14,10 +14,10 @@ export default function AdminNavbar() {
   ];
 
   const rightComponents = [
-    <Button variant="outline" size={{ base: "sm", lg: "md" }}>
+    <Button key={0} variant="outline" size={{ base: "sm", lg: "md" }}>
       Share
     </Button>,
-    <Menu>
+    <Menu key={1}>
       <MenuButton>
         <Avatar
           name={currentUser?.username}

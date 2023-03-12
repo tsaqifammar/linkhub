@@ -41,11 +41,6 @@ export default function SignUp() {
     },
   });
 
-  useEffect(() => {
-    if (router.query.username)
-      onUsernameChange(router.query.username as string);
-  }, []);
-
   const onUsernameChange = useDebouncedCallback(async (username: string) => {
     const { data } = await checkAvailability("username", username);
     if (!data.ok) {
@@ -77,6 +72,11 @@ export default function SignUp() {
   const onSubmit = handleSubmit((values) => {
     signUpMutation.mutate(values);
   });
+
+  useEffect(() => {
+    if (router.query.username)
+      onUsernameChange(router.query.username as string);
+  }, [router.query.username, onUsernameChange]);
 
   return (
     <>

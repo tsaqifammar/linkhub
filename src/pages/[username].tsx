@@ -35,7 +35,7 @@ const Linkhub: NextPage<LinksFormProps> = (props) => {
 
   useEffect(() => {
     incrementLinkhubVisit(username);
-  }, []);
+  }, [username]);
 
   return (
     <>

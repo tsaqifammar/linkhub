@@ -74,7 +74,7 @@ export default function CustomInput<T extends FieldValues>({
           />
         ) : (
           <InputGroup size={size}>
-            <InputLeftAddon children={leftAddon} />
+            <InputLeftAddon>{leftAddon}</InputLeftAddon>
             <Input
               id={name}
               bgColor="white"
